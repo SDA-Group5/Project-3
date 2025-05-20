@@ -1,0 +1,8 @@
+resources:
+  - frontend-deploy.yml
+  - frontend_cluster_ip.yml
+  - frontend_ingress.yml
+  - config_map.yml
+# patchesStrategicMerge:
+# - rollout-order-patch.yml  
+

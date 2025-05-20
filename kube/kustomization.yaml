@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources: 
+- base
+- backend
+- frontend
+#didnt pass testing yet
+#need direct ref for rollout-order-patch 
+# - base/namespace.yml
+# - DB/db_deploy.yml
+# - DB/db_cluster_ip.yml
+# #backend
+# - backend/backend_deploy.yml
+# - backend/backend_cluster_ip.yml
+# - backend/backend_ingress.yml
+#frontend
+# - frontend/frontend-deploy.yml
+# - frontend/frontend_cluster_ip.yml
+# - frontend/frontend_ingress.yml
+# - frontend/config_map.yml
+
+#replacement for var would be added here

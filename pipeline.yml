@@ -8,19 +8,19 @@ variables:
   dockerhubUsername: 'mtery01'                        # Your Docker Hub username
 
   # UI App specific
-  uiImageName: 'ui-3-tier-k8s-app-v2'
-  uiProjectRoot: 'ui'                  # Relative path to UI app's source from repo root
+  uiImageName: 'ui-p3'
+  uiProjectRoot: 'frontend'                  # Relative path to UI app's source from repo root
   uiDockerfile: '$(System.DefaultWorkingDirectory)/$(uiProjectRoot)/Dockerfile' # Full path to UI Dockerfile
 
   # API App specific
-  apiImageName: 'backend-3-tier-k8s-app-v2'
-  apiProjectRoot: 'api'                  # Relative path to API app's source
+  apiImageName: 'backend-p3'
+  apiProjectRoot: 'backend'                  # Relative path to API app's source
   apiDockerfile: '$(System.DefaultWorkingDirectory)/$(apiProjectRoot)/Dockerfile' # Full path to API Dockerfile
 
   # Common Tag for this build
   imageTag: '$(Build.BuildId)'                         # Unique tag for each build (e.g., pipeline run number)
 
-  # --- Variables for later Kubernetes Deployment Stage (placeholders for now) ---
+  # --- Variables for Kubernetes Deployment Stage---
   kustomizeRootPath: 'kube'       # Path to your Kustomize manifests
   kubernetesServiceConnection: 'kube' # ADO Service Connection for AKS
   kubernetesNamespace: 'a2'                   # Target namespace in AKS
@@ -90,7 +90,7 @@ stages:
       displayName: 'Set Kubernetes Context using Service Connection'
       inputs:
         connectionType: 'Kubernetes Service Connection'
-        kubernetesServiceEndpoint: '$(kubernetesServiceConnection)' # Uses your 'kube' variable value
+        kubernetesServiceEndpoint: '$(kubernetesServiceConnection)' 
         command: 'login' # This command configures kubectl for the specified service connection
 
     # Step 3: Update image tags in your Kustomize configuration
@@ -100,7 +100,7 @@ stages:
         # Navigate to the root of your Kustomize configuration
         cd $(System.DefaultWorkingDirectory)/$(kustomizeRootPath)
 
-        # ===== FIXED: Use consistent variable naming =====didnt pass testing yer
+        # ===== pass testing 19/5 =====
         # Define old image names (constants)
         OLD_UI_IMAGE="mtery01/frontend-trainer-portal:latest"
         OLD_API_IMAGE="mtery01/backend-trainer-portal:latest"
@@ -114,7 +114,7 @@ stages:
         echo "Listing files in Kustomize root (for debugging):"
         ls -la
 
-        # ===== FIXED: Use the correct variable names =====didnt pass testing yer
+        # =====  pass testing 19/5 =====
         echo "Setting UI image from '${OLD_UI_IMAGE}' to: ${NEW_UI_IMAGE}"
         kustomize edit set image "${OLD_UI_IMAGE}=${NEW_UI_IMAGE}"
 
@@ -138,18 +138,17 @@ stages:
         echo "Current pod images:"
         kubectl get pods -n $(kubernetesNamespace) -o jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{.spec.containers[0].image}{end}'
       displayName: 'Verify Deployed Images'
-    - script: |
-        echo "Forcing rollout of updated frontend and backend deployments..."
-        kubectl rollout restart deployment frontend-deploy -n $(kubernetesNamespace)
-        kubectl rollout restart deployment backend-deploy -n $(kubernetesNamespace)
-      displayName: 'Force Restart Deployments'
 
     # Step 4: Apply the Kustomize configuration to your AKS cluster
+    # This command deploys the manifests of the app to your AKS cluster
     - task: Kubernetes@1
       displayName: 'Deploy Kustomized Manifests to AKS'
       inputs:
         connectionType: 'Kubernetes Service Connection'
-        kubernetesServiceEndpoint: '$(kubernetesServiceConnection)' # Uses your 'kube' variable value
+        kubernetesServiceEndpoint: '$(kubernetesServiceConnection)' 
         command: 'apply'
         arguments: '-k $(System.DefaultWorkingDirectory)/$(kustomizeRootPath)'
-        namespace: '$(kubernetesNamespace)' # Deploys to your specified namespace
+        namespace: '$(kubernetesNamespace)' # belongs to your service(api/ui) namespace
+
+
+    
