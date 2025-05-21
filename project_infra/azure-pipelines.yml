@@ -1,0 +1,59 @@
+trigger:
+  branches:
+    include:
+      - main
+
+variables:
+  TF_STORAGE_RG: 'DevOps1-Windrunners-backend-RG'
+  TF_STORAGE_ACCOUNT: 'windrunnerstfstate'
+  TF_CONTAINER_NAME: 'tfstate'
+  TF_STATE_KEY: 'terraform.tfstate'
+  TF_DIRECTORY: 'Terraform/Windrunner solution'  
+
+stages:
+- stage: Terraform_Infra
+  displayName: 'Provision Infrastructure'
+  jobs:
+  - job: Terraform
+    displayName: 'Run Terraform'
+    pool:
+      vmImage: 'ubuntu-latest'
+
+    steps:
+    # Step 1: Install Terraform
+    - task: TerraformInstaller@0
+      displayName: 'Install Terraform'
+      inputs:
+        terraformVersion: 'latest'
+
+    # Step 2: Terraform Init
+    - task: TerraformTaskV4@4
+      displayName: 'Terraform Init'
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: '$(TF_DIRECTORY)'
+        backendServiceArm: 'AzureConnection'
+        backendAzureRmResourceGroupName: '$(TF_STORAGE_RG)'
+        backendAzureRmStorageAccountName: '$(TF_STORAGE_ACCOUNT)'
+        backendAzureRmContainerName: '$(TF_CONTAINER_NAME)'
+        backendAzureRmKey: '$(TF_STATE_KEY)'
+
+    # Step 3: Terraform Plan
+    - task: TerraformTaskV4@4
+      displayName: 'Terraform Plan'
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        workingDirectory: '$(TF_DIRECTORY)'
+        environmentServiceNameAzureRM: 'AzureConnection'
+
+    # Step 4: Terraform Apply
+    - task: TerraformTaskV4@4
+      displayName: 'Terraform Apply'
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        workingDirectory: '$(TF_DIRECTORY)'
+        environmentServiceNameAzureRM: 'AzureConnection'
+        args: '-auto-approve'
