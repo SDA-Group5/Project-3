@@ -6,5 +6,5 @@ metadata:
 data:
  config.json: |
    {
-     "API_URL": "http://4.226.36.241/backend/"
+     "API_URL": "http://backend-clusterip-service"
    }

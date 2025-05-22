@@ -2,6 +2,5 @@ resources:
   - backend_deploy.yml
   - backend_cluster_ip.yml
   - backend_ingress.yml
-
 # patchesStrategicMerge:
 # - rollout-order-patch.yml
