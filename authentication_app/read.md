@@ -17,10 +17,13 @@
 
 └── kube
   |
+  
   ├── backend
   |
+  
   ├── base → has namespace a2 (if changed, update pipeline too)
   |
+  
   └── frontend
 
 
