@@ -43,6 +43,8 @@
 
 ## Architecture Flow
 
+
+```mermaid
 graph TD
     A[User (Browser)] --> B[Ingress Controller (NGINX)]
     B --> C[Frontend Ingress ( / )]
@@ -53,4 +55,11 @@ graph TD
     G --> H[Backend Pod (API)]
 
 </details>
+```
+Important Notes
 
+    The namespace in base is a2 - must match pipeline configuration
+
+    ConfigMap contains configuration for both frontend and backend
+
+    Frontend service communicates with backend via the ClusterIP service
