@@ -45,7 +45,7 @@
 
 
 <details>
-<summary>Click to view Mermaid Diagram</summary>
+<summary>Click to view Diagram</summary>
 
 ```mermaid
 graph TD
@@ -56,8 +56,7 @@ graph TD
     E --> F[Backend Ingress ( /backend )]
     F --> G[ClusterIP Service (backend-clusterip-service)]
     G --> H[Backend Pod (API)]
-
-  ```
+```
 </details> 
 Important Notes
 
