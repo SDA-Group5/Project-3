@@ -50,14 +50,14 @@
 ```mermaid
 graph TD
     A[User (Browser)] --> B[Ingress Controller (NGINX)]
-    B --> C[Frontend Ingress ( / )]
+    B --> C[Frontend Ingress (path: /)]
     C --> D[Frontend Pod (Next.js)]
-    D --> E[ConfigMap: http://backend-clusterip-service]
-    E --> F[Backend Ingress ( /backend )]
-    F --> G[ClusterIP Service (backend-clusterip-service)]
+    D -->|reads config| E[ConfigMap]
+    E -->|backend URL| F[Backend Ingress (path: /backend)]
+    F --> G[ClusterIP Service]
     G --> H[Backend Pod (API)]
 ```
-</details> 
+</details>
 Important Notes
 
     The namespace in base is a2 - must match pipeline configuration
