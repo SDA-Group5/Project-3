@@ -1,0 +1,61 @@
+things need to be done before running this pipeline:
+aks is provisioned
+    - with Monitoring with the use of helm inside terraform
+    - ingress NGINX 
+Connection at azure devops:
+    - DockerHub -(dockerhub_connection <-can be change at pipeline)
+    - AKS  -(kube <-can be change at pipeline)
+
+
+├── backend port 3000
+├── frontend port 3000
+└── kube
+    ├── backend
+    ├── base --> has namespace a2 (if u change it dont forget to change it at pipeline too)
+    └── frontend
+
+kube:
+
+1. backend:
+    │   ├── backend_deploy.yml <deployment for backend with two pods>
+    │   ├── backend_ingress.yml <ingress for backend has /backend(/|$)(.*) as path> 
+    │   ├── backend_cluster_ip.yml <service for backend with cluster ip ,80:3000>
+    │   └── kustomization.yaml <call all yml file for backned make it easier>
+
+2. frontend:
+        |──configmap.yml <configmap for backend and frontend> !@!
+    │   ├── frontend_deploy.yml <deployment for frontend with one pods>
+    │   ├── frontend_ingress.yml <ingress for frontend has /(.*) as path> 
+    │   ├── frontend_cluster_ip.yml <service for frontend with cluster ip ,80:3000>
+    │   └── kustomization.yaml <call all yml file for frontend make it easier>
+
+3. base:
+    │   ├── namespace.yml <a2>
+    │   └── kustomization.yaml <call all yml file for base make it easier>
+
+
+4.kustomization.yaml <call all yml file for backend,frontend,base make it easier>
+
+
+
+User (browser)
+    │
+    ▼
+Ingress Controller (NGINX)
+    │
+    ▼
+Frontend Ingress (e.g., /)
+    │
+    ▼
+Frontend Pod (Next.js reads .env at build/runtime)
+    │
+    ▼
+config_map = http://backend-clusterip-service
+    │  <---> backend ingress
+    ▼
+ClusterIP Service (backend-clusterip-service)
+    │
+    ▼
+Backend Pod (API)
+
+    
