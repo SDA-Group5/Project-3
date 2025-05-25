@@ -16,12 +16,12 @@
 ├── frontend (port 3000)
 
 └── kube
-
-├── backend
-
-├── base → has namespace a2 (if changed, update pipeline too)
-
-└── frontend
+  |
+  ├── backend
+  |
+  ├── base → has namespace a2 (if changed, update pipeline too)
+  |
+  └── frontend
 
 
 ## Kubernetes Configuration Details
