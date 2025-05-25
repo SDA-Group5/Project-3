@@ -11,20 +11,12 @@
   - AKS connection (`kube` - can be changed in pipeline)
 
 ## Directory Structure
-├── backend (port 3000)
-
-├── frontend (port 3000)
-
-└── kube
-  |
-  
-  ├── backend
-  |
-  
-  ├── base → has namespace a2 (if changed, update pipeline too)
-  |
-  
-  └── frontend
+backend/ # port 3000
+frontend/ # port 3000
+kube/
+├── backend/ # Backend Kubernetes configs
+├── base/ # Contains namespace 'a2' (if changed, update pipeline too)
+└── frontend/ # Frontend Kubernetes configs
 
 
 ## Kubernetes Configuration Details
