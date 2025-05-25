@@ -47,15 +47,16 @@
 <details>
 <summary>Click to view Diagram</summary>
 
+
 ```mermaid
 graph TD
-    A[User (Browser)] --> B[Ingress Controller (NGINX)]
-    B --> C[Frontend Ingress (path: /)]
-    C --> D[Frontend Pod (Next.js)]
+    A[User Browser] --> B[NGINX Ingress]
+    B --> C[/ Frontend Ingress /]
+    C --> D[Frontend Pod]
     D -->|reads config| E[ConfigMap]
-    E -->|backend URL| F[Backend Ingress (path: /backend)]
+    E -->|backend URL| F[/backend Ingress]
     F --> G[ClusterIP Service]
-    G --> H[Backend Pod (API)]
+    G --> H[Backend Pod]
 ```
 </details>
 Important Notes
