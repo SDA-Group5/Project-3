@@ -1,3 +1,5 @@
 # Project-3
 
-for authentication_app--> it has a read.md/note, read it for more info
+### [Authentication App](authentication_app/README.md)
+```markdown
+{{% include "authentication_app/README.md" %}}
