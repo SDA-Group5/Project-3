@@ -44,12 +44,12 @@
 ## Architecture Flow
 
 ```mermaid
-graph TD
-    User[User (Browser)] --> Ingress[Ingress Controller (NGINX)]
-    Ingress --> FrontendIngress[Frontend Ingress (path: /)]
-    FrontendIngress --> FrontendPod[Frontend Pod (Next.js)]
-    FrontendPod -->|reads from| ConfigMap[config_map: http://backend-clusterip-service]
-    ConfigMap --> BackendIngress[Backend Ingress]
-    BackendIngress --> BackendService[ClusterIP Service (backend-clusterip-service)]
-    BackendService --> BackendPod[Backend Pod (API)]
+graph LR
+    A[User (Browser)] --> B[Ingress Controller (NGINX)]
+    B --> C[Frontend Ingress (path: /)]
+    C --> D[Frontend Pod (Next.js)]
+    D -->|reads from| E[ConfigMap: http://backend-clusterip-service]
+    E --> F[Backend Ingress]
+    F --> G[ClusterIP Service]
+    G --> H[Backend Pod (API)]
 
