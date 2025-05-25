@@ -43,13 +43,14 @@
 
 ## Architecture Flow
 
-```mermaid
-graph LR
+graph TD
     A[User (Browser)] --> B[Ingress Controller (NGINX)]
-    B --> C[Frontend Ingress (path: /)]
+    B --> C[Frontend Ingress ( / )]
     C --> D[Frontend Pod (Next.js)]
-    D -->|reads from| E[ConfigMap: http://backend-clusterip-service]
-    E --> F[Backend Ingress]
-    F --> G[ClusterIP Service]
+    D --> E[ConfigMap: http://backend-clusterip-service]
+    E --> F[Backend Ingress ( /backend )]
+    F --> G[ClusterIP Service (backend-clusterip-service)]
     G --> H[Backend Pod (API)]
+
+</details>
 
