@@ -12,10 +12,15 @@
 
 ## Directory Structure
 backend/ # port 3000
+
 frontend/ # port 3000
+
 kube/
+
 ├── backend/ # Backend Kubernetes configs
+
 ├── base/ # Contains namespace 'a2' (if changed, update pipeline too)
+
 └── frontend/ # Frontend Kubernetes configs
 
 
