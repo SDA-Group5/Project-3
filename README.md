@@ -2,4 +2,4 @@
 
 ### [Authentication App](authentication_app/README.md)
 ```markdown
-{{% include "authentication_app/README.md" %}}
+{{% include "authentication_app/read.md" %}}
